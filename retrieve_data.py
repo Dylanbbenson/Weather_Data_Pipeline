@@ -1,7 +1,7 @@
 import json
 import csv
 import os
-from datetime import date
+from datetime import date, time
 import requests
 import pandas as pd
 import sqlalchemy
@@ -38,12 +38,13 @@ def flatten_json(json_obj, parent_key='', sep='_') -> dict:
     return dict(items)
 
 def dump_data_to_files(json_data) -> None:
+    #flatten json data for csv
+    flattened_json = flatten_json(json_data)
+
     #output raw json
     with open(f"./data/weather_data_{current_date}.json", 'w') as json_f:
         json.dump(json_data, json_f)
 
-    #flatten json data for csv
-    flattened_json = flatten_json(json_data)
     df = pd.DataFrame(pd.json_normalize(flattened_json))
 
     df = df.iloc[:,:21]   #only get necessary columns (first 21)
@@ -55,6 +56,7 @@ def dump_data_to_files(json_data) -> None:
 
     print(f"JSON file saved at /data/weather_data_{current_date}.json")
     print(f"CSV file saved at /data/weather_data_{current_date}.csv")
+
 
 if __name__ == '__main__':
     data = get_weather_data()

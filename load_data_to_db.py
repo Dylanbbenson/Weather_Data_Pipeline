@@ -3,7 +3,7 @@ import sys
 import os
 import pandas as pd
 import mysql.connector
-from datetime import date
+from datetime import date, time
 from decouple import config
 from decouple import config
 from dotenv import load_dotenv
@@ -44,13 +44,16 @@ def load_data_to_mysql(data, connection) -> bool:
 
 
 if __name__ == "__main__":
-    if os.path.isfile(f"./data/weather_data_{current_date}.csv"):
+    if len(sys.argv) > 1:
+        csv = sys.argv[1]
+        df = pd.read_csv(csv)
+    elif os.path.isfile(f"./data/weather_data_{current_date}.csv"):
         df = pd.read_csv(f"./data/weather_data_{current_date}.csv")
-        df = df.fillna('')
     else:
-        print(f"ERROR: ./data/weather_data_{current_date}.csv not found. Exiting...")
+        print(f"ERROR: No data found. Exiting...")
         exit()
 
+    df = df.fillna('')
     mysql_connection = create_mysql_connection()
     if load_data_to_mysql(df, mysql_connection):
         print("Data loaded successfully.")
