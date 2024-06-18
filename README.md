@@ -8,6 +8,7 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 - load_data_to_db.py: python script that loads data to an internal MySQL database.
 - Pipeline_Master.py: python script that uses Airflow to run the previous three scripts as a DAG.
 - create_weather_table.sql: sql script to create MySQL table for weather data.
+- create_mysql_db.sh: shell script to create mysql database and run create_weather_table.sql script.
 
 /config:
 - requirements.txt: all of the pip requirements for this project
