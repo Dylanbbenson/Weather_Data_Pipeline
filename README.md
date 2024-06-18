@@ -7,6 +7,7 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 - load_data_to_s3.py: python script that loads json data to an AWS s3 bucket.
 - load_data_to_db.py: python script that loads data to an internal MySQL database.
 - Pipeline_Master.py: python script that uses Airflow to run the previous three scripts as a DAG.
+- create_weather_table.sql: sql script to create MySQL table for weather data.
 
 /config:
 - requirements.txt: all of the pip requirements for this project
