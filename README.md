@@ -17,7 +17,7 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 - dockerfile: docker file to create the docker image of this project
 - config.env: example config file for specifying environment variables for this project.
 
-![Weather Data Pipeline](https://github.com/Dylanbbenson/Weather_Data_Pipeline/assets/70871558/f927f545-8f8c-41d9-9055-d53b3a281829)
+![Weather Data Pipeline](https://github.com/Dylanbbenson/Weather_Data_Pipeline/assets/70871558/8000fafe-895c-4910-98eb-811692b8cc9d)
 
 **Airflow DAG chart:**
 
