@@ -15,3 +15,6 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 - dockerfile: docker file to create the docker image of this project
 
 ![Weather Data Pipeline](https://github.com/Dylanbbenson/Weather_Data_Pipeline/assets/70871558/f927f545-8f8c-41d9-9055-d53b3a281829)
+
+Airflow DAG chart:
+![image](https://github.com/Dylanbbenson/Weather_Data_Pipeline/assets/70871558/104081af-ae79-436d-b191-69b3ec62a8a6)
