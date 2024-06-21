@@ -1,13 +1,14 @@
 import json
-import csv
 import os
-from datetime import date, time
+from datetime import date, datetime
 import requests
 import pandas as pd
-import sqlalchemy
-import streamlit
-import matplotlib
+
 current_date = date.today().strftime('%Y-%m-%d')
+current_time = datetime.now().strftime("%H")
+json_file = f"./data/weather_data_{current_date}_{current_time}.json"
+csv_file = f"./data/weather_data_{current_date}_{current_time}.csv"
+
 
 #get weather api key
 with open('./config/credentials.json') as f:
@@ -42,20 +43,20 @@ def dump_data_to_files(json_data) -> None:
     flattened_json = flatten_json(json_data)
 
     #output raw json
-    with open(f"./data/weather_data_{current_date}.json", 'w') as json_f:
+    with open(json_file, 'w') as json_f:
         json.dump(json_data, json_f)
 
     df = pd.DataFrame(pd.json_normalize(flattened_json))
 
     df = df.iloc[:,:21]   #only get necessary columns (first 21)
 
-    if os.path.exists(f"./data/weather_data_{current_date}.csv"):
-        df.to_csv(f"./data/weather_data_{current_date}.csv", index=False, mode='a', header=False)
+    if os.path.exists(csv_file):
+        df.to_csv(csv_file, index=False, mode='a', header=False)
     else:
-        df.to_csv(f"./data/weather_data_{current_date}.csv", index=False, mode='w')
+        df.to_csv(csv_file, index=False, mode='w')
 
-    print(f"JSON file saved at /data/weather_data_{current_date}.json")
-    print(f"CSV file saved at /data/weather_data_{current_date}.csv")
+    print(f"JSON file saved at {json_file}")
+    print(f"CSV file saved at {csv_file}")
 
 
 if __name__ == '__main__':

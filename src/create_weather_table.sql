@@ -1,4 +1,4 @@
-CREATE TABLE Weather (
+CREATE TABLE IF NOT EXISTS Weather (
     id INT AUTO_INCREMENT PRIMARY KEY,
     lat NUMERIC,
     lon NUMERIC,
@@ -16,7 +16,8 @@ CREATE TABLE Weather (
     current_clouds INT,
     current_visibility INT,
     current_wind_speed NUMERIC,
-    current_wind_deg INT,
+    current_wind_deg NUMERIC,
+    current_wind_gust NUMERIC,
     current_weather_0_id INT,
     current_weather_0_main VARCHAR(255),
     current_weather_0_description VARCHAR(255),
