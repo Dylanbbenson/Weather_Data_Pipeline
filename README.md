@@ -15,9 +15,12 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 - create_weather_table.sql: sql script to create MySQL table for weather data.
 
 /config:
+- config.env: template config file for specifying environment variables for this project.
+
+/:
 - requirements.txt: all of the pip requirements for this project
 - dockerfile: docker file to create the docker image of this project
-- config.env: example config file for specifying environment variables for this project.
+- docker-compose.yml: for setting up Airflow service
 
 ![Weather Data Pipeline](https://github.com/Dylanbbenson/Weather_Data_Pipeline/assets/70871558/8000fafe-895c-4910-98eb-811692b8cc9d)
 
