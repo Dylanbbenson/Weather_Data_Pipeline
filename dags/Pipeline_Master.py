@@ -6,6 +6,12 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import date, datetime
 
+#specify project root and files to execute
+PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
+retrieve_data_path = os.path.join(PROJECT_ROOT, 'src', 'retrieve_data.py')
+load_data_to_db_path = os.path.join(PROJECT_ROOT, 'src', 'load_data_to_db.py')
+load_data_to_s3_path = os.path.join(PROJECT_ROOT, 'src', 'load_data_to_s3.py')
+
 #set date and time variables for files
 current_date = date.today().strftime('%Y-%m-%d')
 current_time = datetime.now().strftime("%H")
@@ -27,13 +33,13 @@ def run_script(script_path, script_arg=None) -> None:
 
 def get_weather_data() -> None:
     logging.info("Starting ETL Process...")
-    run_script('./src/retrieve_data.py')
+    run_script(retrieve_data_path)
     logging.info("Data retrieval completed.")
 
 def load_weather_data_internal() -> None:
     logging.info("Loading data into database...")
     if os.path.isfile(csv_file):
-        run_script('./src/load_data_to_db.py', csv_file)
+        run_script(load_data_to_db_path, csv_file)
     else:
         logging.error(f"ERROR: No data found. Exiting...")
         print(f"ERROR: No data found. Exiting...")
@@ -42,7 +48,7 @@ def load_weather_data_internal() -> None:
 def load_weather_data_s3() -> None:
     logging.info("Loading data into s3...")
     if os.path.isfile(json_file):
-        run_script('./src/load_data_to_s3.py', json_file)
+        run_script(load_data_to_s3_path, json_file)
     else:
         logging.error(f"ERROR: No data found. Exiting...")
         print(f"ERROR: No data found. Exiting...")

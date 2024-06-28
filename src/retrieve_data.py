@@ -6,6 +6,7 @@ import pandas as pd
 
 current_date = date.today().strftime('%Y-%m-%d')
 current_time = datetime.now().strftime("%H")
+if not os.path.exists("./data"): os.makedirs("./data")
 json_file = f"./data/weather_data_{current_date}_{current_time}.json"
 csv_file = f"./data/weather_data_{current_date}_{current_time}.csv"
 
