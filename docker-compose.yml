@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+
+  webserver:
+    image: weather_data_pipeline:latest
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    command: webserver
+
+  scheduler:
+    image: weather_data_pipeline:latest
+    depends_on:
+      - postgres
+    command: scheduler
