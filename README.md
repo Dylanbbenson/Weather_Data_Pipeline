@@ -4,8 +4,10 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 
 **Project Structure**
 
+/dags:
+- Pipeline_Master.py: python script that specifies an Airflow DAG and workflow for the three python scripts to run in order. This script is Cron programmed to run once at the top of every hour.
+
 /src:
-- Pipeline_Master.py: python script that specifies an Airflow DAG and workflow for the following three python scripts to run in order. This script is Cron programmed to run once at the top of every hour.
 - retrieve_data.py: python script that pulls data from the OpenWeather api using an api key located in an config.env file (not provided in this project, you'll need to get your own). Saves data to local directory in the format of "weather_data_{current_date}_{current_hour}" as both json and csv. 
 - load_data_to_s3.py: python script that loads json data to an AWS s3 bucket.
 - load_data_to_db.py: python script that loads data to an internal MySQL database located on the ec2 instance.
