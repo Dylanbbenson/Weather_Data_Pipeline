@@ -1,17 +1,18 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM apache/airflow:2.5.1-python3.8
 
-# Set the working directory in the container
-WORKDIR /app
+USER root
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    python3-dev \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+USER airflow
 
-# Install any needed packages specified in requirements.txt
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Run retrieve_data.py when the container launches
-CMD ["python", "./src/retrieve_data.py"]
+COPY dags/ /opt/airflow/dags/
+#COPY plugins/ /opt/airflow/plugins/
