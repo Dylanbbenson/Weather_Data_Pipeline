@@ -40,3 +40,7 @@ The historical dataset was accumulated by scraping data from Wunderground.com us
 **Airflow DAG chart:**
 
 ![image](https://github.com/Dylanbbenson/Weather_Data_Pipeline/assets/70871558/104081af-ae79-436d-b191-69b3ec62a8a6)
+
+**Historical Dataset Aggregation Pipeline**
+
+![image](https://github.com/user-attachments/assets/19c0e92a-dd88-4a0f-b5bd-efe151391cd1)
