@@ -1,11 +1,17 @@
 # Weather_Data_Pipeline
 
-Weather data project demonstrating data engineering concepts such as ETL, storage, logging, task scheduling, and orchestration. I have this project running on an AWS ec2 instance and pulls data from the OpenWeather api for the Chicago area, performs some data transformation, and loads it to both a local MySQL db and a S3 bucket. This project will also create a MySQL db if not created already, and save 2 backup files in the form of json and csv to a local directory. A visual graph of this process is located below.
+Weather data project demonstrating data engineering concepts such as ETL, storage, logging, task scheduling, and orchestration. This project is split into two parts:
+- ingestion and transformation of historical weather data to create a complete timeline of metrics in my area
+- pipeline to pull daily weather data from the OpenWeather API, perform transformations, and add to the existing dataset in S3
+
+I have this project running on an AWS ec2 instance and pulls data from the OpenWeather api for the Chicago area, performs some data transformation, and loads it to both a local MySQL db and an S3 bucket with the rest of the historical data. This project will also create a MySQL db if not created already, and save 2 backup files in the form of json and csv to a local directory. A visual graph of this process is located below.
+
+The historical dataset was accumulated by scraping data from Wunderground.com using Python, storing in s3 as json objects, aggregating and cleaning them into parquet files in Glue, then loading and querying in Athena.
 
 **Project Structure**
 
 /dags:
-- Pipeline_Master.py: python script that specifies an Airflow DAG and workflow for the three python scripts to run in order. This script is Cron programmed to run once at the top of every hour.
+- Pipeline_Master.py: python script that specifies an Airflow DAG and workflow to run the python scripts retrieve_data, load_data_to_s3, and load_data_to_db in order. This script is Cron programmed to run once at the top of every hour.
 
 /src:
 - retrieve_data.py: python script that pulls data from the OpenWeather api using an api key located in an config.env file (not provided in this project, you'll need to get your own). Saves data to local directory in the format of "weather_data_{current_date}_{current_hour}" as both json and csv. 
@@ -13,9 +19,16 @@ Weather data project demonstrating data engineering concepts such as ETL, storag
 - load_data_to_db.py: python script that loads data to an internal MySQL database located on the ec2 instance.
 - create_mysql_db.sh: shell script to create mysql database, create user with privileges, and run create_weather_table.sql script.
 - create_weather_table.sql: sql script to create MySQL table for weather data.
+  json_to_parquet.py - PySpark script to aggregate and transform historical json data into parquet files in S3
+- json_to_parquet.json - The actual Glue job that executes the above python script as a workflow
+- lambda_function.py - (optional) lambda function I wrote to convert the raw json to a csv format instead. I wrote this before deciding to convert to parquet instead, but still kept it.
+- create_athena_table.sql - sql to create a table for the data in Athena using the Apache Iceberg table format
 
 /config:
 - config.env: template config file for specifying environment variables for this project.
+
+/data:
+- example_data.snappy.parquet: example parquet file created from the Glue job converting json to parquet
 
 /:
 - requirements.txt: all of the pip requirements for this project
