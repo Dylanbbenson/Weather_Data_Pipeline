@@ -14,13 +14,15 @@ The historical dataset was accumulated by scraping data from Wunderground.com us
 - Pipeline_Master.py: python script that specifies an Airflow DAG and workflow to run the python scripts retrieve_data, load_data_to_s3, and load_data_to_db in order. This script is Cron programmed to run once at the top of every hour.
 
 /src:
-- retrieve_data.py: python script that pulls data from the OpenWeather api using an api key located in an config.env file (not provided in this project, you'll need to get your own). Saves data to local directory in the format of "weather_data_{current_date}_{current_hour}" as both json and csv. 
+- retrieve_data.py: python script that pulls today's weather data from wunderground api.
 - load_data_to_s3.py: python script that loads json data to an AWS s3 bucket.
 - load_data_to_db.py: python script that loads data to an internal MySQL database located on the ec2 instance.
 - create_mysql_db.sh: shell script to create mysql database, create user with privileges, and run create_weather_table.sql script.
 - create_weather_table.sql: sql script to create MySQL table for weather data.
   json_to_parquet.py - PySpark script to aggregate and transform historical json data into parquet files in S3
 - json_to_parquet.json - The actual Glue job that executes the above python script as a workflow
+- json_to_parquet_daily.py: Pyspark script to aggregate and transform today's weather data into parquet in s3
+- json_to_parquet_daily.json: The actual Glue job that executes the above python script as a workflow
 - lambda_function.py - (optional) lambda function I wrote to convert the raw json to a csv format instead. I wrote this before deciding to convert to parquet instead, but still kept it.
 - create_athena_table.sql - sql to create a table for the data in Athena using the Apache Iceberg table format
 
