@@ -1,4 +1,3 @@
-import sys
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.transforms import *
@@ -6,21 +5,18 @@ from pyspark.sql import functions as F
 from pyspark.sql.functions import coalesce, col, lit, explode, expr, size, round
 from pyspark.sql.types import StringType, FloatType, IntegerType
 
-# Initialize Spark and Glue contexts
+#initialize glue and spark
 sc = SparkContext()
 glueContext = GlueContext(sc)
 spark = glueContext.spark_session
 
-# Reading from the source table
+#read from table
 datasource0 = glueContext.create_dynamic_frame.from_catalog(database="weather", table_name="raw")
-
-# Convert to DataFrame for processing
 df = datasource0.toDF()
 
-# Explode the observations array
+#explode observations subarray
 flat_df = df.withColumn("observation", F.explode(F.col("observations")))
 
-# Select relevant fields and rename for consistency
 flat_df = flat_df.select(
     F.col("observation.date").alias("date"),
     F.col("observation.temp").alias("temperature"),
@@ -42,7 +38,6 @@ flat_df = flat_df.select(
     F.col("observation.feels_like").cast("float").alias("feels_like")
 )
 
-# Fill missing values with defaults
 flat_df = flat_df.fillna({
     "gust": 0.0,
     "wind_speed": 0.0,
@@ -60,7 +55,7 @@ flat_df = flat_df.fillna({
 
 flat_df = flat_df.filter(F.col("date").isNotNull())
 
-# Group by 'date' and aggregate all fields to create a single row per day
+#perform daily aggregations
 aggregated_df = flat_df.groupBy("date").agg(
     F.round(F.avg("temperature"), 0).cast("integer").alias("temperature"),
     F.round(F.avg("dew_point"), 2).alias("dew_point"),
@@ -81,6 +76,7 @@ aggregated_df = flat_df.groupBy("date").agg(
     F.max("wind_direction").alias("wind_direction")
 )
 
+#select final fields and cast to data types
 final_df = aggregated_df.select(
     col("date").cast(StringType()),
     col("temperature").cast(IntegerType()),
@@ -102,7 +98,7 @@ final_df = aggregated_df.select(
     col("feels_like").cast(IntegerType())
 )
 
-# Write the aggregated data to Parquet in overwrite mode
+#write to s3 as parquet
 output_path = "s3://dyls-weather-data/processed/"
 final_df.write.mode("append").parquet(output_path)
 
