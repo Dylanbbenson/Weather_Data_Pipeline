@@ -1,0 +1,40 @@
+{
+	"info": {
+		"_postman_id": "785e6744-f1cc-46c3-bfed-27ff8d9f48bd",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33046342"
+	},
+	"item": [
+		{
+			"name": "weather_data",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://g1yodfl2f7.execute-api.us-east-2.amazonaws.com/Weather_Data/weather?date=20241122",
+					"protocol": "https",
+					"host": [
+						"g1yodfl2f7",
+						"execute-api",
+						"us-east-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Weather_Data",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "20241122"
+						}
+					]
+				},
+				"description": "### Weather Data API\n\nThis API endpoint retrieves weather data for a specific date.\n\n#### Request\n\n- Method: GET\n- Endpoint: `https://g1yodfl2f7.execute-api.us-east-2.amazonaws.com/Weather_Data/weather`\n- Query Parameters:\n    - date (string, required): The date for which weather data is requested (format: YYYYMMDD).\n\n#### Response\n\nThe response for this request is a JSON object with the following schema:\n\n``` json\n{\n  \"date\": \"string\",\n  \"temperature\": \"number\",\n  \"humidity\": \"number\",\n  \"wind_speed\": \"number\",\n  \"description\": \"string\"\n}\n\n ```\n\n- `date`: The date for which the weather data is provided.\n- `temperature`: The temperature on the specified date.\n- `humidity`: The humidity on the specified date.\n- `wind_speed`: The wind speed on the specified date.\n- `description`: A brief description of the weather conditions."
+			},
+			"response": []
+		}
+	]
+}
