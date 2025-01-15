@@ -1,10 +1,13 @@
 # Weather_Data_Pipeline
 
-Weather data project demonstrating data engineering concepts such as ETL, storage, logging, task scheduling, and orchestration. This project is split into two parts:
+Weather data project demonstrating data engineering concepts such as ETL, storage, logging, task scheduling, orchestration, and visualization. This project is split into three parts:
 - ingestion and transformation of historical weather data to create a complete timeline of metrics in my area
 - pipeline to pull daily weather data from the OpenWeather API, perform transformations, and add to the existing dataset in S3
+- visualization of the data using Metabase
 
 I have this project running on an AWS ec2 instance and pulls data from the OpenWeather api for the Chicago area, performs some data transformation, and loads it to both a local MySQL db and an S3 bucket with the rest of the historical data. This project will also create a MySQL db if not created already, and save 2 backup files in the form of json and csv to a local directory. A visual graph of this process is located below.
+
+This data can be viewed as a sharable metabase dashboard at this link (you will need to login to Metabase to use it): https://dashboard.dylsdomain.com
 
 The historical dataset was accumulated by scraping data from Wunderground.com using Python, storing in s3 as json objects, aggregating and cleaning them into parquet files in Glue, then loading and querying in Athena.
 
