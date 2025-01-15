@@ -26,14 +26,19 @@ The historical dataset was accumulated by scraping data from Wunderground.com us
 - json_to_parquet.json - The actual Glue job that executes the above python script as a workflow
 - json_to_parquet_daily.py: Pyspark script to aggregate and transform today's weather data into parquet in s3
 - json_to_parquet_daily.json: The actual Glue job that executes the above python script as a workflow
-- lambda_function.py - (optional) lambda function I wrote to convert the raw json to a csv format instead. I wrote this before deciding to convert to parquet instead, but still kept it.
+- lambda_function.py - (optional) lambda function I wrote to convert the raw json to a csv format instead. I wrote this before deciding to convert to parquet instead, but still kept it
 - create_athena_table.sql - sql to create a table for the data in Athena using the Apache Iceberg table format
+- Athena_to_csv.py - converts Athena data to a local csv file
+- Athena_to_hyper.py - (optional) converts Athena data to a hyper file that can be used with Tableau. I developed this when I planned on using Tableau for visualization, but decided on another dashboard program instead
 
 /config:
 - config.env: template config file for specifying environment variables for this project.
 
 /data:
 - example_data.snappy.parquet: example parquet file created from the Glue job converting json to parquet
+
+/metabase:
+- questions-38-56.json: metabase questions exported as json files that can be imported to a metabase dashboard
 
 /:
 - requirements.txt: all of the pip requirements for this project
