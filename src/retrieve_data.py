@@ -1,9 +1,9 @@
 import boto3
 import requests
 import concurrent.futures
-from datetime import date
+from datetime import date, datetime
 import json
-today = date.today().strftime('%Y%m%d')
+import argparse
 from pathlib import Path
 
 #load credentials
@@ -62,6 +62,26 @@ def fetch_and_upload_data(today, max_workers=10):
             upload_to_s3(result, file_name)
 
 
-#fetch data in parallel
-fetch_and_upload_data(today, max_workers=10)
-print("Data retrieval and upload to S3 complete.")
+def main():
+    parser = argparse.ArgumentParser(description="Retrieve weather data for a specific date.")
+    parser.add_argument(
+        "--date", required=False
+    )
+
+    args = parser.parse_args()
+
+    try:
+        if not args.date:
+            date_arg = date.today().strftime('%Y%m%d')
+        else:
+            date_arg = datetime.strptime(args.date, "%Y%m%d").strftime("%Y%m%d")
+
+    except ValueError:
+        return
+
+    fetch_and_upload_data(date_arg, max_workers=10)
+    print("Data retrieval and upload to S3 complete.")
+
+
+if __name__ == "__main__":
+    main()
