@@ -22,7 +22,7 @@ The historical dataset was accumulated by scraping data from Wunderground.com us
 - load_data_to_db.py: python script that loads data to an internal MySQL database located on the ec2 instance.
 - create_mysql_db.sh: shell script to create mysql database, create user with privileges, and run create_weather_table.sql script.
 - create_weather_table.sql: sql script to create MySQL table for weather data.
-  json_to_parquet.py - PySpark script to aggregate and transform historical json data into parquet files in S3
+- json_to_parquet.py - PySpark script to aggregate and transform historical json data into parquet files in S3
 - json_to_parquet.json - The actual Glue job that executes the above python script as a workflow
 - json_to_parquet_daily.py: Pyspark script to aggregate and transform today's weather data into parquet in s3
 - json_to_parquet_daily.json: The actual Glue job that executes the above python script as a workflow
@@ -30,6 +30,9 @@ The historical dataset was accumulated by scraping data from Wunderground.com us
 - create_athena_table.sql - sql to create a table for the data in Athena using the Apache Iceberg table format
 - Athena_to_csv.py - converts Athena data to a local csv file
 - Athena_to_hyper.py - (optional) converts Athena data to a hyper file that can be used with Tableau. I developed this when I planned on using Tableau for visualization, but decided on another dashboard program instead
+- retrieve_missing_dates_from_athena.py: queries athena for missing data and returns it as a list of dates to pass into fill_in_missing_dates.py
+- fill_in_missing_dates.py: simple script that takes returned dates from retrieve_missing_dates_from_athena.py script and passes them into the retrieve_data.py script to retrieve missing data.
+- partition_parquet_files_in_s3.py - cleans up files in S3 by partitioning singular date files and storing historical ones seperately
 
 /config:
 - config.env: template config file for specifying environment variables for this project.
